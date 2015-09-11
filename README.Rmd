@@ -7,14 +7,17 @@ output: html_document
 
 Here is my first attempt at adding a document to my hw repo. 
 
-```{r}
-summary(cars)
-```
+I first created this document.  Now I am editing it and explaining adding the markdown to my online git Repository. 
 
-You can also embed plots, for example:
+Here's an attempt to play with R markdown formatting:
 
-```{r, echo=FALSE}
-plot(cars)
-```
+*I am thinking real hard about all of this and trying to keep zen so I don't get* **angry** *or* **frustrated** !!
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+Some of the new things we are learning are: 
+
+- How to navigate within the terminal
+- How to work with git
+- How to work with github so version control can be shared with collaborators and the **world**!
+
+
+

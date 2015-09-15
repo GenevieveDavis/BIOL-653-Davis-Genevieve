@@ -19,5 +19,18 @@ Some of the new things we are learning are:
 - How to work with git
 - How to work with github so version control can be shared with collaborators and the **world**!
 
+Steps for Github:
+
+1. Use 'init git'  within your cd to have git capabilities in your folder
+2. Create your repository on your Github.com page
+3. Create and/or edit your document (in this case, README.Rmd) in R studio
+4. To check status of what can be added, in terminal, type 'git status'
+  This shows us anything new or changed within the our directory (note, if you are not in your directory, navigate to it in the terminal. For this case of this assignment, we want to be in the 'homework' directory for this class.)
+5. Once you edit the document, in this case, this README.Rmd, it should show up on the staging list in 'git status'.  type 'git add README.Rmd'  to prep it to add changes of the documnent to git. 
+6. type 'git commit -m 'edited document to list steps went through for this homework and to add documents to github' '
+7.  type 'git remote add origin linkToRepositoryHere.git'
+8. type 'git push origin master'  to upload the documents you just committed to your git hub repository. 
+
+Then, hopefully, you are all set!
 
 

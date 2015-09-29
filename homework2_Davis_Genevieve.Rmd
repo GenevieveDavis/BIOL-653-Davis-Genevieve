@@ -1,0 +1,121 @@
+---
+title: "Homework 2"
+author: "Genevieve Davis"
+date: "September 29, 2015"
+output: html_document
+---
+
+*Part 1:*
+
+```{r}
+# Load packages required
+library(ggplot2)
+library(gapminder)
+library(dplyr)
+
+###Plot 1: gdpPercap x lifeExp, grouped by continent, by color and shape
+ggplot(data = gapminder, aes(x = gdpPercap, y = lifeExp, color = continent)) + 
+  geom_point(aes(shape = continent))
+
+### Plot 2: the previous plot using a transformation to linearize the data (take natural log of gdpPercap)
+ggplot(data = gapminder, aes(x = gdpPercap, y = lifeExp, color = continent)) + 
+  geom_point(aes(shape = continent)) +
+  scale_x_log10() # Linearize data
+
+### Plot 3: add linear regression line to plot
+ggplot(data = gapminder, aes(x = gdpPercap, y = lifeExp)) + 
+  geom_point(aes(color = continent, shape = continent)) +   # must specify color here, otherwise you get linear regression line for all continents in geom_smooth()
+  scale_x_log10() + 
+  geom_smooth(method = lm) # Get best fit line for linear regression
+
+### Plot 4: plot the density functions of life expectancy for each continent, faceted by year
+ggplot(data = gapminder, aes(x = lifeExp)) +
+  geom_density(aes(fill = continent), alpha = 0.6) +
+  facet_wrap(~ year) # Facet plots by year
+
+### Plot 5: plot life expectency by continent, for each year
+ggplot(data = gapminder, aes(x = continent, y = lifeExp, color = continent)) +
+  geom_boxplot() +
+  facet_wrap(~ year) +
+  theme(axis.text.x  = element_text(angle = 90, vjust = 0.5,)) # rotate x-axis labels 
+```
+
+**Part 2:**
+
+```{r}
+#### Plot 6:  Plot summary of life expectancies for each continent
+
+# Do not need dplyr for this plot
+ggplot(data = gapminder, aes(x = lifeExp)) +
+  geom_density(aes(fill = continent), alpha = 0.6)
+
+#### Plot 7:  Use dplyr to plot the mean life expectancy on a density plot for Asia
+# Using dplyr, get mean life expectancies for all countries in Asia 
+LifeExp_Asia <-
+  gapminder %>%
+  subset(continent == 'Asia') %>%
+  group_by(country)
+
+# Density plot using subsetted and summarized data from dplyr above
+ggplot(LifeExp_Asia, aes(x = lifeExp)) +
+  geom_density(fill = 'green', alpha = 0.6) +
+  # Add vertical line at mean of life expectency
+  geom_vline(aes(xintercept = mean(lifeExp))) +
+  # Give the plot a title
+  ggtitle("Life Expectancy in Asia")
+  
+
+#### Plot 8:
+# Create a mean life expectancies data table summarized by continent
+mean_lifeExp <- tbl_df(
+  gapminder %>%
+  group_by(continent) %>%
+  summarize(meanLifeExp = mean(lifeExp)))
+
+# Density plots of life expectancies for each continent with mean life expectancies for each continent marked
+
+ggplot(gapminder, aes(x = lifeExp)) +
+  # Density plot, colored by continent
+  geom_density(aes(fill = continent), alpha = 0.6) +
+  # Vertical line at each continent's mean life expectancy, from data table above
+  geom_vline(aes(xintercept = meanLifeExp), mean_lifeExp) +
+  # Have plots separated out by continent
+  facet_wrap(~ continent)  +
+  # Give the plot a title
+  ggtitle("Mean Life Expectancies of Continents")
+```
+
+
+**Part 3:**
+```{r}
+# Load gapminder csv
+hw_gapminder <- read.csv('./hw_gapminder.csv')
+
+#see structure of dataset
+str(hw_gapminder)
+# Make sure column names are spelled correctly, fixed here
+mean_lifeExp <- mean(hw_gapminder$lifeExp)
+
+# Get correct value of mean_lifeExp to be 59.47444
+mean_lifeExp
+
+# Subsample dataset, need to have c() for both row and column specifications, corrected here
+small_set <- hw_gapminder[c(1, 2, 3, 4, 1300:1304), c('country', 'continent', 'year')]
+
+# Show data set with rows 1-4 and 1300-1304 for columns country, continent, and year
+small_set
+
+# Get mean gdp; need to remove NAs in data
+mean_gdp <- mean(hw_gapminder$gdpPercap, na.rm = T)
+
+# Show mean gdp value of 7210.019
+mean_gdp 
+
+# Get the country with the maximum life expectancy
+max_country <- as.character(hw_gapminder$country[which(hw_gapminder$lifeExp == max(hw_gapminder$lifeExp))])
+
+# Show country with maximum life expectancy is Japan
+max_country
+```
+
+

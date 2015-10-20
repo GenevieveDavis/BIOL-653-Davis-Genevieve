@@ -64,29 +64,43 @@ ggplot(LifeExp_Asia, aes(x = lifeExp)) +
   # Give the plot a title
   ggtitle("Life Expectancy in Asia")
   
+# JD: It can be preferable when the object is small, to create the data subset 
+# within the ggplot so that you don't end up with many little objects running 
+# filling up your workspace. 
+ggplot(filter(gapminder, lifeExp, continent), aes(x = lifeExp, fill = continent)) + 
+  geom_density(alpha = 0.5) + 
+  geom_vline(xintercept = mean(lifeExp))
+
 
 #### Plot 8:
 # Create a mean life expectancies data table summarized by continent
-mean_lifeExp <- tbl_df(
+mean_lifeExp <-
   gapminder %>%
   group_by(continent) %>%
-  summarize(meanLifeExp = mean(lifeExp)))
+  summarize(meanLifeExp = mean(lifeExp))
+
+# No need to wrap the dplyr output as a data.table - dplyr (almost always? 
+# for simple operations it doesn't) returns a tbl_df object.
 
 # Density plots of life expectancies for each continent with mean life expectancies for each continent marked
 
-ggplot(gapminder, aes(x = lifeExp)) +
+ggplot(data = gapminder, aes(x = lifeExp)) +
   # Density plot, colored by continent
   geom_density(aes(fill = continent), alpha = 0.6) +
   # Vertical line at each continent's mean life expectancy, from data table above
-  geom_vline(aes(xintercept = meanLifeExp), mean_lifeExp) +
+  geom_vline(aes(xintercept = meanLifeExp), data = mean_lifeExp) +
   # Have plots separated out by continent
   facet_wrap(~ continent)  +
   # Give the plot a title
   ggtitle("Mean Life Expectancies of Continents")
+
+# I like to be explicit about what arguments I'm using, it means that I don't 
+# ever have to worry about the order I input my variables.
 ```
 
 
 **Part 3:**
+
 ```{r}
 # Load gapminder csv
 hw_gapminder <- read.csv('./hw_gapminder.csv')
